@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+
+package crud;
+
+option go_package = "./";
+
+service CRUD {
+  rpc CreateUser(Request) returns (Response) {}
+  rpc GetUser(Request) returns (Response) {}
+  rpc UpdateUser(Request) returns (Response) {}
+  rpc DeleteUser(Request) returns (Response) {}
+}
+
+
+message Request {
+  string name = 1;
+  string password = 2;
+}
+
+message Response {
+  bool success = 1;
+  Request body = 2;
+}
+
