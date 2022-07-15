@@ -14,12 +14,11 @@ service CRUD {
 
 
 message Request {
-  string name = 1;
-  string password = 2;
+  bytes body = 1;
 }
 
 message Response {
   bool success = 1;
-  Request body = 2;
+  string body = 2;
 }
 
