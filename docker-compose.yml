@@ -4,16 +4,21 @@ services:
     build:
       context: ./cmd
       dockerfile: Dockerfile
+    environment:
+      - GRPC_SERVICE_HOST=dns:///entry
     ports:
-      - 2828:2828
+      - "2828:2828"
     networks:
       - backend
   entry:
     build:
       context: ./microservices/entry
       dockerfile: Dockerfile
+    environment:
+      - GRPC_USER_HOST=dns:///user
+      - GRPC_ORDER_HOST=dns:///order
     ports:
-      - 80:80
+      - "80:80"
     depends_on:
       - redis
     networks:
@@ -22,8 +27,10 @@ services:
     build:
       context: ./microservices/user
       dockerfile: Dockerfile
+    environment:
+      - REDIS_HOST=redis
     ports:
-      - 81:81
+      - "81:81"
     depends_on:
       - redis
     networks:
@@ -32,8 +39,10 @@ services:
     build:
       context: ./microservices/order
       dockerfile: Dockerfile
+    environment:
+      - REDIS_HOST=redis
     ports:
-      - 82:82
+      - "82:82"
     depends_on:
       - redis
     networks:

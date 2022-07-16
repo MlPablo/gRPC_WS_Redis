@@ -7,5 +7,6 @@ RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-w -s" -o order .
 FROM alpine:latest
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/order .
+COPY ./.env .
 EXPOSE 82
 CMD ["./order"]

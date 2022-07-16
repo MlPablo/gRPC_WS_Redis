@@ -3,7 +3,9 @@ package main
 import (
 	"log"
 	"net"
+	"os"
 
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
@@ -12,18 +14,21 @@ import (
 )
 
 func main() {
-	gRPC, err := grpc.Dial("dns:///ws_grpc-user-1:81", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err := godotenv.Load(); err != nil {
+		log.Fatal(err)
+	}
+	gRPCUser, err := grpc.Dial(os.Getenv("GRPC_USER_HOST")+os.Getenv("GRPC_USER_URL"), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatal(err)
 	}
-	gRPC1, err := grpc.Dial("dns:///ws_grpc-order-1:82", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	gRPCOrder, err := grpc.Dial(os.Getenv("GRPC_ORDER_HOST")+os.Getenv("GRPC_ORDER_URL"), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatal(err)
 	}
-	service := service2.NewUserClient(gRPC, gRPC1)
+	service := service2.NewUserClient(gRPCUser, gRPCOrder)
 	s := grpc.NewServer()
 	pb.RegisterRegisterServer(s, service)
-	l, err := net.Listen("tcp", ":80")
+	l, err := net.Listen("tcp", os.Getenv("GRPC_SERVICE_URL"))
 	if err != nil {
 		log.Fatal(err)
 	}

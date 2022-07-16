@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/websocket"
 	"google.golang.org/grpc"
@@ -34,9 +35,9 @@ func ConnectionChecker(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	log.Println("Client connected ...")
-	gRPC, err := grpc.Dial("dns:///ws_grpc-entry-1:80", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	gRPC, err := grpc.Dial(os.Getenv("GRPC_SERVICE_HOST")+os.Getenv("GRPC_SERVICE_URL"), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 	client := pb.NewRegisterClient(gRPC)
 	reader(ws, client)

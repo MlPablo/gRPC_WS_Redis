@@ -7,6 +7,7 @@ RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-w -s" -o user .
 FROM alpine:latest
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/user .
+COPY ./.env .
 EXPOSE 81
 CMD ["./user"]
 

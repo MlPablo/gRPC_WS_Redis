@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+
+package order;
+
+option go_package = "./";
+
+service Order {
+  rpc CreateOrder(Request) returns (Response) {}
+}
+
+
+message Request {
+  bytes body = 1;
+}
+
+message Response {
+  bool success = 1;
+}

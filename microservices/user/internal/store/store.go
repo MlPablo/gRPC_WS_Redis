@@ -1,18 +1,19 @@
 package store
 
 import (
+	"os"
+
 	"github.com/go-redis/redis/v9"
 )
 
 type Storage interface {
 	NewCRUD() CRUD
-	NewOrders() Orders
 }
 
 func New() Storage {
 	return &storage{redis.NewClient(
 		&redis.Options{
-			Addr:     "redis:6379",
+			Addr:     os.Getenv("REDIS_HOST") + os.Getenv("REDIS_URL"),
 			Password: "",
 			DB:       0,
 		})}
@@ -24,8 +25,4 @@ type storage struct {
 
 func (s *storage) NewCRUD() CRUD {
 	return &crud{s}
-}
-
-func (s *storage) NewOrders() Orders {
-	return &orders{s}
 }
