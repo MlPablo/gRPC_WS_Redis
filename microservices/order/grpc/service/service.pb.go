@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.28.0
 // 	protoc        v3.21.2
-// source: service.proto
+// source: api.proto
 
 package __
 
@@ -173,12 +173,12 @@ func file_service_proto_rawDescGZIP() []byte {
 
 var file_service_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_service_proto_goTypes = []interface{}{
-	(*Request)(nil),  // 0: service.Request
-	(*Response)(nil), // 1: service.Response
+	(*Request)(nil),  // 0: api.Request
+	(*Response)(nil), // 1: api.Response
 }
 var file_service_proto_depIdxs = []int32{
-	0, // 0: service.Register.Get:input_type -> service.Request
-	1, // 1: service.Register.Get:output_type -> service.Response
+	0, // 0: api.Register.Get:input_type -> api.Request
+	1, // 1: api.Register.Get:output_type -> api.Response
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

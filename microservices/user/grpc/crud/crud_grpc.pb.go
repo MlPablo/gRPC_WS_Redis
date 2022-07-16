@@ -19,7 +19,7 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// CRUDClient is the client API for CRUD service.
+// CRUDClient is the client API for CRUD api.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CRUDClient interface {
@@ -73,7 +73,7 @@ func (c *cRUDClient) DeleteUser(ctx context.Context, in *Request, opts ...grpc.C
 	return out, nil
 }
 
-// CRUDServer is the server API for CRUD service.
+// CRUDServer is the server API for CRUD api.
 // All implementations must embed UnimplementedCRUDServer
 // for forward compatibility
 type CRUDServer interface {
@@ -101,7 +101,7 @@ func (UnimplementedCRUDServer) DeleteUser(context.Context, *Request) (*Response,
 }
 func (UnimplementedCRUDServer) mustEmbedUnimplementedCRUDServer() {}
 
-// UnsafeCRUDServer may be embedded to opt out of forward compatibility for this service.
+// UnsafeCRUDServer may be embedded to opt out of forward compatibility for this api.
 // Use of this interface is not recommended, as added methods to CRUDServer will
 // result in compilation errors.
 type UnsafeCRUDServer interface {
@@ -184,7 +184,7 @@ func _CRUD_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
-// CRUD_ServiceDesc is the grpc.ServiceDesc for CRUD service.
+// CRUD_ServiceDesc is the grpc.ServiceDesc for CRUD api.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CRUD_ServiceDesc = grpc.ServiceDesc{

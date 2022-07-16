@@ -6,15 +6,17 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/MlPablo/gRPCWebSocket/internal/service"
-	"github.com/MlPablo/gRPCWebSocket/internal/store"
+	"github.com/MlPablo/gRPCWebSocket/microservices/order/internal/service"
+	"github.com/MlPablo/gRPCWebSocket/microservices/order/internal/store"
+
+	"github.com/MlPablo/gRPCWebSocket/microservices/order/api"
 	pb "github.com/MlPablo/gRPCWebSocket/microservices/order/grpc/order"
 )
 
 func main() {
 	storage := store.New()
 	order := service.NewOrderService(storage)
-	serv := grpcServer{order}
+	serv := api.GrpcServer{order}
 	s := grpc.NewServer()
 	pb.RegisterOrderServer(s, &serv)
 	l, err := net.Listen("tcp", ":82")

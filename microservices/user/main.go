@@ -6,15 +6,16 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/MlPablo/gRPCWebSocket/internal/service"
-	"github.com/MlPablo/gRPCWebSocket/internal/store"
+	"github.com/MlPablo/gRPCWebSocket/microservices/user/api"
 	pb "github.com/MlPablo/gRPCWebSocket/microservices/user/grpc/crud"
+	"github.com/MlPablo/gRPCWebSocket/microservices/user/internal/service"
+	"github.com/MlPablo/gRPCWebSocket/microservices/user/internal/store"
 )
 
 func main() {
 	storage := store.New()
 	crud := service.NewCRUDService(storage)
-	serv := grpcServer{crud}
+	serv := api.GrpcServer{S: crud}
 	s := grpc.NewServer()
 	pb.RegisterCRUDServer(s, &serv)
 	l, err := net.Listen("tcp", ":81")

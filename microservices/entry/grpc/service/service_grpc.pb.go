@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.21.2
-// source: service.proto
+// source: api.proto
 
 package __
 
@@ -19,7 +19,7 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// RegisterClient is the client API for Register service.
+// RegisterClient is the client API for Register api.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RegisterClient interface {
@@ -36,14 +36,14 @@ func NewRegisterClient(cc grpc.ClientConnInterface) RegisterClient {
 
 func (c *registerClient) Get(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	out := new(Response)
-	err := c.cc.Invoke(ctx, "/service.Register/Get", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/api.Register/Get", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// RegisterServer is the server API for Register service.
+// RegisterServer is the server API for Register api.
 // All implementations must embed UnimplementedRegisterServer
 // for forward compatibility
 type RegisterServer interface {
@@ -59,7 +59,7 @@ func (UnimplementedRegisterServer) Get(context.Context, *Request) (*Response, er
 }
 func (UnimplementedRegisterServer) mustEmbedUnimplementedRegisterServer() {}
 
-// UnsafeRegisterServer may be embedded to opt out of forward compatibility for this service.
+// UnsafeRegisterServer may be embedded to opt out of forward compatibility for this api.
 // Use of this interface is not recommended, as added methods to RegisterServer will
 // result in compilation errors.
 type UnsafeRegisterServer interface {
@@ -80,7 +80,7 @@ func _Register_Get_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/service.Register/Get",
+		FullMethod: "/api.Register/Get",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(RegisterServer).Get(ctx, req.(*Request))
@@ -88,11 +88,11 @@ func _Register_Get_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
-// Register_ServiceDesc is the grpc.ServiceDesc for Register service.
+// Register_ServiceDesc is the grpc.ServiceDesc for Register api.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Register_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "service.Register",
+	ServiceName: "api.Register",
 	HandlerType: (*RegisterServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -101,5 +101,5 @@ var Register_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "service.proto",
+	Metadata: "api.proto",
 }

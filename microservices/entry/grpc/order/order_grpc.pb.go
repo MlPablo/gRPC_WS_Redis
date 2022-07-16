@@ -19,7 +19,7 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// OrderClient is the client API for Order service.
+// OrderClient is the client API for Order api.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type OrderClient interface {
@@ -43,7 +43,7 @@ func (c *orderClient) CreateOrder(ctx context.Context, in *Request, opts ...grpc
 	return out, nil
 }
 
-// OrderServer is the server API for Order service.
+// OrderServer is the server API for Order api.
 // All implementations must embed UnimplementedOrderServer
 // for forward compatibility
 type OrderServer interface {
@@ -60,7 +60,7 @@ func (UnimplementedOrderServer) CreateOrder(context.Context, *Request) (*Respons
 }
 func (UnimplementedOrderServer) mustEmbedUnimplementedOrderServer() {}
 
-// UnsafeOrderServer may be embedded to opt out of forward compatibility for this service.
+// UnsafeOrderServer may be embedded to opt out of forward compatibility for this api.
 // Use of this interface is not recommended, as added methods to OrderServer will
 // result in compilation errors.
 type UnsafeOrderServer interface {
@@ -89,7 +89,7 @@ func _Order_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func(i
 	return interceptor(ctx, in, info, handler)
 }
 
-// Order_ServiceDesc is the grpc.ServiceDesc for Order service.
+// Order_ServiceDesc is the grpc.ServiceDesc for Order api.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Order_ServiceDesc = grpc.ServiceDesc{

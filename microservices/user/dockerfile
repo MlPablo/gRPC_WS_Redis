@@ -1,0 +1,12 @@
+FROM golang as builder
+WORKDIR /usr/src/app
+COPY . .
+RUN go get
+RUN GOOS=linux CGO_ENABLED=0 GOARCH=amd64 go build -ldflags="-w -s" -o user .
+
+FROM alpine:latest
+WORKDIR /usr/src/app
+COPY --from=builder /usr/src/app/user .
+EXPOSE 81
+CMD ["./user"]
+
