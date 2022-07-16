@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"log"
 
 	pb "github.com/MlPablo/gRPCWebSocket/microservices/order/grpc/order"
 
@@ -36,7 +35,6 @@ func (g *GrpcServer) CreateOrder(ctx context.Context, req *pb.Request) (*pb.Resp
 	if len(order.Type) == 0 || len(order.Name) == 0 {
 		return &pb.Response{Success: false}, errors.New("unable to validate data")
 	}
-	log.Println(req)
 	if err := g.S.AddOrder(ctx, order); err != nil {
 		return &pb.Response{Success: false}, err
 	}

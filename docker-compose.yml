@@ -5,7 +5,7 @@ services:
       context: ./cmd
       dockerfile: Dockerfile
     environment:
-      - GRPC_SERVICE_HOST=dns:///entry
+      - GRPC_SERVICE_HOST=entry
     ports:
       - "2828:2828"
     networks:
@@ -15,8 +15,8 @@ services:
       context: ./microservices/entry
       dockerfile: Dockerfile
     environment:
-      - GRPC_USER_HOST=dns:///user
-      - GRPC_ORDER_HOST=dns:///order
+      - GRPC_USER_HOST=user
+      - GRPC_ORDER_HOST=order
     ports:
       - "80:80"
     depends_on:

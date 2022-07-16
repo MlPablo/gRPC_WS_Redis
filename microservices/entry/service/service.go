@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"log"
 
 	"google.golang.org/grpc"
 
@@ -24,7 +23,6 @@ func NewUserClient(cc grpc.ClientConnInterface, oc grpc.ClientConnInterface) *Us
 }
 
 func (u *UserClient) Get(ctx context.Context, req *pb.Request) (*pb.Response, error) {
-	log.Println(string(req.Body), req.Code)
 	switch req.GetCode() {
 	case 1:
 		res, err := u.CrudClient.CreateUser(ctx, &pb2.Request{Body: req.Body})
@@ -57,6 +55,6 @@ func (u *UserClient) Get(ctx context.Context, req *pb.Request) (*pb.Response, er
 		}
 		return &pb.Response{Success: res.GetSuccess()}, err
 	default:
-		return &pb.Response{}, nil
+		return &pb.Response{Error: "wrong operation code"}, nil
 	}
 }
