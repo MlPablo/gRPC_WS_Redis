@@ -28,21 +28,35 @@ func (u *UserClient) Get(ctx context.Context, req *pb.Request) (*pb.Response, er
 	switch req.GetCode() {
 	case 1:
 		res, err := u.CrudClient.CreateUser(ctx, &pb2.Request{Body: req.Body})
+		if err != nil {
+			return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody(), Error: err.Error()}, nil
+		}
 		return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody()}, err
 	case 2:
 		res, err := u.CrudClient.GetUser(ctx, &pb2.Request{Body: req.Body})
+		if err != nil {
+			return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody(), Error: err.Error()}, nil
+		}
 		return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody()}, err
 	case 3:
 		res, err := u.CrudClient.UpdateUser(ctx, &pb2.Request{Body: req.Body})
+		if err != nil {
+			return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody(), Error: err.Error()}, nil
+		}
 		return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody()}, err
 	case 4:
 		res, err := u.CrudClient.DeleteUser(ctx, &pb2.Request{Body: req.Body})
+		if err != nil {
+			return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody(), Error: err.Error()}, nil
+		}
 		return &pb.Response{Success: res.GetSuccess(), Body: res.GetBody()}, err
 	case 5:
 		res, err := u.OrderClient.CreateOrder(ctx, &pb1.Request{Body: req.Body})
+		if err != nil {
+			return &pb.Response{Success: res.GetSuccess(), Error: err.Error()}, nil
+		}
 		return &pb.Response{Success: res.GetSuccess()}, err
 	default:
 		return &pb.Response{}, nil
 	}
-	//return &pb.Response{}, nil
 }

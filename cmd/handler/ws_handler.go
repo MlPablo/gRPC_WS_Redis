@@ -57,12 +57,7 @@ func reader(conn *websocket.Conn, client pb.RegisterClient) {
 			continue
 		}
 		res, _ := client.Get(context.Background(), &pb.Request{Code: int32(code.OpCode), Body: msg})
-		if err != nil {
-			conn.WriteMessage(1, []byte(err.Error()))
-			log.Println(err)
-		} else {
-			answer, _ := json.Marshal(fmt.Sprintf("Succes: %t | Body: %s | Error: %s", res.GetSuccess(), res.GetBody(), res.GetError()))
-			conn.WriteMessage(1, answer)
-		}
+		answer, _ := json.Marshal(fmt.Sprintf("Succes: %t | Body: %s | Error: %s", res.GetSuccess(), res.GetBody(), res.GetError()))
+		conn.WriteMessage(1, answer)
 	}
 }
