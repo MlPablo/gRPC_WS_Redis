@@ -1,28 +1,26 @@
 package store
 
 import (
-	"os"
+	"context"
 
-	"github.com/go-redis/redis/v9"
+	"github.com/gocql/gocql"
+
+	"github.com/MlPablo/gRPCWebSocket/microservices/user/internal/models"
+	redisDB "github.com/MlPablo/gRPCWebSocket/microservices/user/internal/store/redis"
+	"github.com/MlPablo/gRPCWebSocket/microservices/user/internal/store/scylla"
 )
 
 type Storage interface {
-	NewCRUD() CRUD
+	Create(ctx context.Context, user models.User) error
+	Read(ctx context.Context, id string) (string, error)
+	Update(ctx context.Context, user models.User) error
+	Delete(ctx context.Context, id string) error
 }
 
-func New() Storage {
-	return &storage{redis.NewClient(
-		&redis.Options{
-			Addr:     os.Getenv("REDIS_HOST") + os.Getenv("REDIS_URL"),
-			Password: "",
-			DB:       0,
-		})}
+func NewRedis() Storage {
+	return redisDB.New()
 }
 
-type storage struct {
-	store *redis.Client
-}
-
-func (s *storage) NewCRUD() CRUD {
-	return &crud{s}
+func NewScylla(session *gocql.Session) Storage {
+	return scylla.New(session)
 }

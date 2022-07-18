@@ -29,10 +29,15 @@ services:
       dockerfile: Dockerfile
     environment:
       - REDIS_HOST=redis
+      - SCYLLA_URL=node1
     ports:
       - "81:81"
+    restart: on-failure
     depends_on:
       - redis
+      - node1
+      - node2
+      - node3
     networks:
       - backend
   order:
@@ -48,9 +53,35 @@ services:
     networks:
       - backend
   redis:
-    image: "redis"
+    image: redis
     restart: always
     networks:
       - backend
+  node1:
+    image: scylladb/scylla
+    container_name: node1
+    command: --seeds=node1
+    restart: on-failure
+    networks:
+      - backend
+  node2:
+    image: scylladb/scylla
+    container_name: node2
+    command: --seeds=node1
+    restart: on-failure
+    networks:
+      - backend
+    depends_on:
+      - node1
+  node3:
+    image: scylladb/scylla
+    container_name: node3
+    command: --seeds=node1
+    networks:
+      - backend
+    restart: on-failure
+    depends_on:
+      - node1
 networks:
   backend:
+    driver: bridge
