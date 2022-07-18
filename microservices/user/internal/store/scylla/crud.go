@@ -24,9 +24,9 @@ func (s *scylla) Create(ctx context.Context, user models.User) error {
 	return nil
 }
 
-func (s *scylla) Read(ctx context.Context, id string) (string, error) {
+func (s *scylla) Read(ctx context.Context, user models.User) (string, error) {
 	var pass string
-	if err := s.session.Query("SELECT password FROM myapp.users WHERE name = ?", id).Scan(&pass); err != nil {
+	if err := s.session.Query("SELECT password FROM myapp.users WHERE name = ?", user.User).Scan(&pass); err != nil {
 		return "", err
 	}
 	return pass, nil
@@ -40,8 +40,8 @@ func (s *scylla) Update(ctx context.Context, user models.User) error {
 	return nil
 }
 
-func (s *scylla) Delete(ctx context.Context, id string) error {
-	if err := s.session.Query("DELETE FROM myapp.users WHERE name = ?", id).Exec(); err != nil {
+func (s *scylla) Delete(ctx context.Context, user models.User) error {
+	if err := s.session.Query("DELETE FROM myapp.users WHERE name = ?", user.User).Exec(); err != nil {
 		return err
 	}
 	return nil

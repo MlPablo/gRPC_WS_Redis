@@ -12,9 +12,9 @@ import (
 
 type Storage interface {
 	Create(ctx context.Context, user models.User) error
-	Read(ctx context.Context, id string) (string, error)
+	Read(ctx context.Context, user models.User) (string, error)
 	Update(ctx context.Context, user models.User) error
-	Delete(ctx context.Context, id string) error
+	Delete(ctx context.Context, user models.User) error
 }
 
 func NewRedis() Storage {

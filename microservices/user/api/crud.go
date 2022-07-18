@@ -61,7 +61,7 @@ func (g *GrpcServer) GetUser(ctx context.Context, req *pb.Request) (*pb.Response
 	if len(user.User) == 0 {
 		return &pb.Response{Success: false}, errors.New("unable to validate data")
 	}
-	userPassword, err := g.S.GetUser(ctx, user.User)
+	userPassword, err := g.S.GetUser(ctx, user)
 	if err != nil {
 		return &pb.Response{Success: false}, err
 	}
@@ -75,7 +75,7 @@ func (g *GrpcServer) DeleteUser(ctx context.Context, req *pb.Request) (*pb.Respo
 	if len(user.User) == 0 {
 		return &pb.Response{Success: false}, errors.New("unable to validate data")
 	}
-	if err := g.S.DeleteUser(ctx, user.User); err != nil {
+	if err := g.S.DeleteUser(ctx, user); err != nil {
 		return &pb.Response{Success: false}, err
 	}
 	return &pb.Response{Success: true}, nil

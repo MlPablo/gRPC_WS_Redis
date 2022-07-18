@@ -10,16 +10,17 @@ import (
 type CRUDService interface {
 	CreateUser(ctx context.Context, user models.User) error
 	UpdateUser(ctx context.Context, user models.User) error
-	GetUser(ctx context.Context, id string) (string, error)
-	DeleteUser(ctx context.Context, user string) error
+	GetUser(ctx context.Context, user models.User) (string, error)
+	DeleteUser(ctx context.Context, user models.User) error
 }
 
 type crudService struct {
+	auth    *authorization
 	storage store.Storage
 }
 
 func NewCRUDService(store store.Storage) CRUDService {
-	return &crudService{storage: store}
+	return &crudService{auth: NewAuthorization(), storage: store}
 }
 
 func (c *crudService) CreateUser(ctx context.Context, user models.User) error {
@@ -35,14 +36,15 @@ func (c *crudService) UpdateUser(ctx context.Context, user models.User) error {
 	}
 	return nil
 }
-func (c *crudService) GetUser(ctx context.Context, id string) (string, error) {
-	user, err := c.storage.Read(ctx, id)
+func (c *crudService) GetUser(ctx context.Context, user models.User) (string, error) {
+	c.auth.Authorize(ctx, user.User)
+	pass, err := c.storage.Read(ctx, user)
 	if err != nil {
 		return "", err
 	}
-	return user, nil
+	return pass, nil
 }
-func (c *crudService) DeleteUser(ctx context.Context, user string) error {
+func (c *crudService) DeleteUser(ctx context.Context, user models.User) error {
 	if err := c.storage.Delete(ctx, user); err != nil {
 		return err
 	}

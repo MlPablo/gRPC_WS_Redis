@@ -12,7 +12,7 @@ import (
 )
 
 type redisDB struct {
-	store *redis.Client
+	Store *redis.Client
 }
 
 func New() *redisDB {
@@ -27,43 +27,43 @@ func New() *redisDB {
 func (c *redisDB) Create(ctx context.Context, user models.User) error {
 	cont, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	if exist, _ := c.store.Get(cont, user.User).Result(); exist != "" {
+	if exist, _ := c.Store.Get(cont, user.User).Result(); exist != "" {
 		return errors.New("already exists")
 	}
 
-	if err := c.store.Set(context.Background(), user.User, user.Password, 0).Err(); err != nil {
+	if err := c.Store.Set(context.Background(), user.User, user.Password, 20*time.Second).Err(); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func (c *redisDB) Read(ctx context.Context, id string) (string, error) {
+func (c *redisDB) Read(ctx context.Context, user models.User) (string, error) {
 	cont, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	user := c.store.Get(cont, id)
-	if user.Err() != nil {
-		return "", user.Err()
+	val := c.Store.Get(cont, user.User)
+	if val.Err() != nil {
+		return "", val.Err()
 	}
-	return user.Val(), nil
+	return val.Val(), nil
 }
 
 func (c *redisDB) Update(ctx context.Context, user models.User) error {
 	cont, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	if err := c.store.Get(cont, user.User).Err(); err != nil {
+	if err := c.Store.Get(cont, user.User).Err(); err != nil {
 		return errors.New("no such user")
 	}
-	if err := c.store.GetSet(context.Background(), user.User, user.Password).Err(); err != nil {
+	if err := c.Store.GetSet(context.Background(), user.User, user.Password).Err(); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (c *redisDB) Delete(ctx context.Context, id string) error {
+func (c *redisDB) Delete(ctx context.Context, user models.User) error {
 	cont, cancel := context.WithTimeout(ctx, time.Second)
 	defer cancel()
-	if err := c.store.GetDel(cont, id).Err(); err != nil {
+	if err := c.Store.GetDel(cont, user.User).Err(); err != nil {
 		return err
 	}
 	return nil
