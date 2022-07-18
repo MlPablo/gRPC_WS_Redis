@@ -22,7 +22,6 @@ func (s *scylla) Create(ctx context.Context, user models.User) error {
 	if err := s.session.Query("INSERT INTO myapp.users (name, password, register_time) VALUES (?, ?, ?)", user.User, user.Password, time.Now()).Exec(); err != nil {
 		return err
 	}
-	log.Println("Hello from Scylla")
 	return nil
 }
 
@@ -36,8 +35,7 @@ func (s *scylla) Read(ctx context.Context, user models.User) (string, error) {
 }
 
 func (s *scylla) Update(ctx context.Context, user models.User) error {
-	if err := s.session.Query("INSERT INTO myapp.users (name, password, register_time) VALUES (?, ?, ?)", user.User, user.Password, time.Now()).Exec(); err != nil {
-		//if err := s.session.Query("UPDATE users SET password = ? WHERE user = ?;", user.Password, user.User).Exec(); err != nil {
+	if err := s.session.Query("UPDATE myapp.users SET password = ? where name = ?;", user.Password, user.User).Exec(); err != nil {
 		return err
 	}
 	return nil

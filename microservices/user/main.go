@@ -54,7 +54,7 @@ func NewScyllaSession() (*gocql.Session, error) {
 		return nil, err
 	}
 	err = session.Query("CREATE TABLE IF NOT EXISTS myapp.users " +
-		"(name text, password text, register_time timestamp, PRIMARY KEY (name, password));").Exec()
+		"(name text, password text, register_time timestamp, PRIMARY KEY (name));").Exec()
 	if err != nil {
 		return nil, err
 	}

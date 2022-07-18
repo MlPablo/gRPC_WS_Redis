@@ -35,8 +35,6 @@ func (c *redisDB) Create(ctx context.Context, user models.User) error {
 	if err := c.Store.Set(context.Background(), user.User, user.Password, 20*time.Second).Err(); err != nil {
 		return err
 	}
-	log.Println("Hello from Redis")
-
 	return nil
 }
 
