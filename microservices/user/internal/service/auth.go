@@ -15,11 +15,11 @@ func NewAuthorization() *authorization {
 	return &authorization{store.NewRedis()}
 }
 
-func (a *authorization) Authorize(ctx context.Context, user models.User) bool {
-	if _, err := a.redisDB.Read(ctx, user); err == nil {
-		return true
+func (a *authorization) Authorize(ctx context.Context, user models.User) (string, bool) {
+	if string, err := a.redisDB.Read(ctx, user); err == nil {
+		return string, true
 	}
-	return false
+	return "", false
 }
 
 func (a *authorization) AddClient(ctx context.Context, user models.User) error {

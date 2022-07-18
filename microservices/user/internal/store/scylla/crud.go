@@ -2,6 +2,7 @@ package scylla
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/gocql/gocql"
@@ -21,6 +22,7 @@ func (s *scylla) Create(ctx context.Context, user models.User) error {
 	if err := s.session.Query("INSERT INTO myapp.users (name, password, register_time) VALUES (?, ?, ?)", user.User, user.Password, time.Now()).Exec(); err != nil {
 		return err
 	}
+	log.Println("Hello from Scylla")
 	return nil
 }
 
@@ -29,6 +31,7 @@ func (s *scylla) Read(ctx context.Context, user models.User) (string, error) {
 	if err := s.session.Query("SELECT password FROM myapp.users WHERE name = ?", user.User).Scan(&pass); err != nil {
 		return "", err
 	}
+	log.Println("Hello from Scylla")
 	return pass, nil
 }
 

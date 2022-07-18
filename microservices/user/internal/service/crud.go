@@ -27,6 +27,9 @@ func (c *crudService) CreateUser(ctx context.Context, user models.User) error {
 	if err := c.storage.Create(ctx, user); err != nil {
 		return err
 	}
+	if err := c.auth.AddClient(ctx, user); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -34,10 +37,16 @@ func (c *crudService) UpdateUser(ctx context.Context, user models.User) error {
 	if err := c.storage.Update(ctx, user); err != nil {
 		return err
 	}
+	c.auth.AddClient(ctx, user)
+	if err := c.auth.AddClient(ctx, user); err != nil {
+		return err
+	}
 	return nil
 }
 func (c *crudService) GetUser(ctx context.Context, user models.User) (string, error) {
-	c.auth.Authorize(ctx, user.User)
+	if pass, ok := c.auth.Authorize(ctx, user); ok {
+		return pass, nil
+	}
 	pass, err := c.storage.Read(ctx, user)
 	if err != nil {
 		return "", err

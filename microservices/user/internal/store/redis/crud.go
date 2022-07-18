@@ -3,6 +3,7 @@ package redisDB
 import (
 	"context"
 	"errors"
+	"log"
 	"os"
 	"time"
 
@@ -34,6 +35,7 @@ func (c *redisDB) Create(ctx context.Context, user models.User) error {
 	if err := c.Store.Set(context.Background(), user.User, user.Password, 20*time.Second).Err(); err != nil {
 		return err
 	}
+	log.Println("Hello from Redis")
 
 	return nil
 }
@@ -45,6 +47,7 @@ func (c *redisDB) Read(ctx context.Context, user models.User) (string, error) {
 	if val.Err() != nil {
 		return "", val.Err()
 	}
+	log.Println("Hello from Redis")
 	return val.Val(), nil
 }
 
